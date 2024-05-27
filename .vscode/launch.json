@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:quest24}",
+            "name": "Debug quest",
+            "program": "${workspaceFolder:quest24}/.build/debug/quest",
+            "preLaunchTask": "swift: Build Debug quest"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:quest24}",
+            "name": "Release quest",
+            "program": "${workspaceFolder:quest24}/.build/release/quest",
+            "preLaunchTask": "swift: Build Release quest"
+        }
+    ]
+}

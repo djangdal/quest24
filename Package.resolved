@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PythonKit",
+        "repositoryURL": "https://github.com/pvieito/PythonKit.git",
+        "state": {
+          "branch": "master",
+          "revision": "b54598c853303a09efe16296c099314215af9a12",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftyGPIO",
+        "repositoryURL": "https://github.com/uraimo/SwiftyGPIO.git",
+        "state": {
+          "branch": null,
+          "revision": "b86215de6ecde8e6649590978164a5532ef7a975",
+          "version": "1.4.4"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
