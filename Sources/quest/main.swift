@@ -5,7 +5,7 @@ import PythonKit
 //let gpios = SwiftyGPIO.GPIOs(for:.RaspberryPi4)
 //var gp = gpios[.P2]!
 
-print("hello")
+print("helloo")
 
 let sys = Python.import("sys")
 sys.path.append("/home/djangdal/quest24/Sources/quest/")
