@@ -4,16 +4,14 @@ import time
 
 pygame.init()
 
-def play():
-    sound = pygame.mixer.Sound('/home/djangdal/quest24/1.mp3')
+def play1():
+    sound = pygame.mixer.Sound('1.mp3')
     sound.play()
     while(pygame.mixer.get_busy()):
         pygame.time.delay(100)
-    # return sound.get_length()
-    
-    # playsound('/home/djangdal/quest24/1.mp3')
-    # sound.play()
-    # return sound.get_length()
 
-def hello():
-    return "Hey swift"
+def play2():
+    sound = pygame.mixer.Sound('2.mp3')
+    sound.play()
+    while(pygame.mixer.get_busy()):
+        pygame.time.delay(100)
