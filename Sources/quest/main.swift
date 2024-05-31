@@ -20,19 +20,19 @@ gp.onChange{
     print("The value changed, current value:" + String(gpio.value))
 }  
 
-// let sys = Python.import("sys")
-// sys.path.append("Sources/quest/")
-// let soundPlayer = Python.import("sound")
+let sys = Python.import("sys")
+sys.path.append("Sources/quest/")
+let soundPlayer = Python.import("sound")
 
 // var isBusy = false
 
 while(true) {
     // guard !isBusy else { continue }
-    let value = gp.value
+    var value = gp.value
     print("Value \(value)")
     // gp.value = 0
     print("Hi and welcome, what do you want to play?")
-    if value = 0 {
+    if value == 0 {
         soundPlayer.play1()
     }
     Thread.sleep(forTimeInterval: 1)
