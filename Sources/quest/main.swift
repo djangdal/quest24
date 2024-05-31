@@ -32,6 +32,9 @@ while(true) {
     print("Value \(value)")
     // gp.value = 0
     print("Hi and welcome, what do you want to play?")
+    if value = 0 {
+        soundPlayer.play1()
+    }
     Thread.sleep(forTimeInterval: 1)
     
     // if let input = readLine() {
