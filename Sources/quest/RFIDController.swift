@@ -1,16 +1,5 @@
-//
-//  RFIDController.swift
-//
-//
-//  Created by David Jangdal on 2024-06-03.
-//
-
-import Foundation
-
-class RFIDController {
-    init() {
-        
+final class RFIDController {
+    func writeNew(level: Level) {
+        // Write new level to rfid
     }
-    
-    var rfidNumber: String?
 }

@@ -35,11 +35,7 @@ class PinController {
     
     func isPressingButton() -> Bool {
 #if os(OSX)
-        if let input = readLine(), input == "1" {
-            return true
-        } else {
-            return false
-        }
+        return false
 #elseif(Linux)
         print("Button value \(pin2.value)")
         return pin2.value == 1

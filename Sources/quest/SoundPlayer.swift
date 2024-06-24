@@ -1,11 +1,3 @@
-//
-//  SoundPlayer.swift
-//  quest
-//
-//  Created by David Jangdal on 2024-06-03.
-//
-
-import Foundation
 import PythonKit
 
 enum Sound: String {

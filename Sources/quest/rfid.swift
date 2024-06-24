@@ -1,3 +1,4 @@
+#if os(Linux)
 import Foundation
 import Glibc
 import SwiftyGPIO
@@ -418,172 +419,174 @@ class MFRC522 {
 
 
 
+//
+//import Foundation
+//
+//let group = DispatchGroup()
+//group.enter()
+//group.notify(queue: DispatchQueue.main) {
+//    exit(EXIT_SUCCESS)
+//}
+//
+//signal(SIGINT) { signal in
+//    print("Bye! \(signal)")
+//    group.leave()
+//}
+//
+//// Create an object of the class MFRC522
+//let rc522 = MFRC522()
+//
+//// Welcome message
+//print("Welcome to the MFRC522 data read example")
+//print("Press Ctrl-C to stop.")
+//
+//while true {
+//    // Scan for cards
+//    let (statusSearch, tagType) = rc522.request(reqMode: rc522.PICC_REQIDL)
+//
+//    // If a card is found
+//    if statusSearch == rc522.MI_OK {
+//        print("Card detected")
+//    } else {
+//        sleep(1)
+//        continue
+//    }
+//
+//    // Get the UID of the card
+//    let (statusUUID, uid) = rc522.anticoll()
+//
+//    // If we have the UID, continue
+//    guard statusUUID == rc522.MI_OK else { break }
+//
+//    // Print UID
+//    print("Card read UID: \(uid[0]), \(uid[1]), \(uid[2]), \(uid[3])")
+//
+//    // This is the default key for authentication
+//    let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+//
+//    // Select the scanned tag
+//    rc522.selectTag(serNum: uid)
 
-import Foundation
+/*
+ Read.py
 
-let group = DispatchGroup()
-group.enter()
-group.notify(queue: DispatchQueue.main) {
-    exit(EXIT_SUCCESS)
-}
+ // Authenticate
+ let statusAuth = rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 8, sectorkey: key, serNum: uid)
 
-signal(SIGINT) { signal in
-    print("Bye! \(signal)")
-    group.leave()
-}
+ // Check if authenticated
+ if statusAuth == rc522.MI_OK {
+ rc522.read(blockAddr: 8)
+ rc522.stopCrypto()
+ } else {
+ print("Authentication error")
+ }
+ */
 
-// Create an object of the class MFRC522
-let rc522 = MFRC522()
-
-// Welcome message
-print("Welcome to the MFRC522 data read example")
-print("Press Ctrl-C to stop.")
-
-while true {
-    // Scan for cards
-    let (statusSearch, tagType) = rc522.request(reqMode: rc522.PICC_REQIDL)
-
-    // If a card is found
-    if statusSearch == rc522.MI_OK {
-        print("Card detected")
-    } else {
-        sleep(1)
-        continue
-    }
-
-    // Get the UID of the card
-    let (statusUUID, uid) = rc522.anticoll()
-
-    // If we have the UID, continue
-    guard statusUUID == rc522.MI_OK else { break }
-
-    // Print UID
-    print("Card read UID: \(uid[0]), \(uid[1]), \(uid[2]), \(uid[3])")
-
-    // This is the default key for authentication
-    let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-
-    // Select the scanned tag
-    rc522.selectTag(serNum: uid)
-
-    /*
-    Read.py
-
-    // Authenticate
-    let statusAuth = rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 8, sectorkey: key, serNum: uid)
-
-    // Check if authenticated
-    if statusAuth == rc522.MI_OK {
-        rc522.read(blockAddr: 8)
-        rc522.stopCrypto()
-    } else {
-        print("Authentication error")
-    }
-    */
-
-    /*
-    Dump.py
-    */
-    rc522.dumpClassic1K(key: key, uid: uid)
-
-    rc522.stopCrypto()
+/*
+ Dump.py
+ */
+//    rc522.dumpClassic1K(key: key, uid: uid)
+//
+//    rc522.stopCrypto()
 
 
-    /*
-    Write.py
+/*
+ Write.py
 
-    // Authenticate
-    let statusAuth = rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 8, sectorkey: key, serNum: uid)
-    print("\n")    
+ // Authenticate
+ let statusAuth = rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 8, sectorkey: key, serNum: uid)
+ print("\n")
 
-    // Check if authenticated
-    if statusAuth != rc522.MI_OK {
-        print("Authentication error")
-        continue
-    }
+ // Check if authenticated
+ if statusAuth != rc522.MI_OK {
+ print("Authentication error")
+ continue
+ }
 
-    print("Sector 8 looked like this:")
-    rc522.read(blockAddr: 8)
-    print("\n")
+ print("Sector 8 looked like this:")
+ rc522.read(blockAddr: 8)
+ print("\n")
 
-    print("Sector 8 will now be filled with 0xFF:")
-    // Write the data
-    rc522.write(blockAddr: 8, writeData: Array(repeating: (0xFF as Byte), count: 16))
-    print("\n")
+ print("Sector 8 will now be filled with 0xFF:")
+ // Write the data
+ rc522.write(blockAddr: 8, writeData: Array(repeating: (0xFF as Byte), count: 16))
+ print("\n")
 
-    print("It now looks like this:")
-    // Check to see if it was written
-    rc522.read(blockAddr: 8)
-    print("\n")
+ print("It now looks like this:")
+ // Check to see if it was written
+ rc522.read(blockAddr: 8)
+ print("\n")
 
-    print("Now we fill it with 0x00:")
-    rc522.write(blockAddr: 8, writeData: Array(repeating: (0x00 as Byte), count: 16))
-    print("\n")
+ print("Now we fill it with 0x00:")
+ rc522.write(blockAddr: 8, writeData: Array(repeating: (0x00 as Byte), count: 16))
+ print("\n")
 
-    print("It is now empty:")
-    // Check to see if it was written
-    rc522.read(blockAddr: 8)
-    print("\n")
+ print("It is now empty:")
+ // Check to see if it was written
+ rc522.read(blockAddr: 8)
+ print("\n")
 
-    // Stop    
-    rc522.stopCrypto()
-    */
+ // Stop
+ rc522.stopCrypto()
+ */
 
-    /*
-    // Write NDEF
-    guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 4, sectorkey: key, serNum: uid) == rc522.MI_OK else {
-        print("Error reading block 4")
-        break
-    }
+/*
+ // Write NDEF
+ guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 4, sectorkey: key, serNum: uid) == rc522.MI_OK else {
+ print("Error reading block 4")
+ break
+ }
 
-    print("\nBlock 4 looked like this:")
-    rc522.read(blockAddr: 4)
-    print("\n")
+ print("\nBlock 4 looked like this:")
+ rc522.read(blockAddr: 4)
+ print("\n")
 
-    print("Writing NDEF message to block 4")
-    rc522.write(blockAddr: 4, writeData: [0x00, 0x00, 0x03, 0x11, 0xD1, 0x01, 0x0D, 0x55, 0x01, 0x61, 0x64, 0x61, 0x66, 0x72, 0x75, 0x69])
-    print("\n")
+ print("Writing NDEF message to block 4")
+ rc522.write(blockAddr: 4, writeData: [0x00, 0x00, 0x03, 0x11, 0xD1, 0x01, 0x0D, 0x55, 0x01, 0x61, 0x64, 0x61, 0x66, 0x72, 0x75, 0x69])
+ print("\n")
 
-    print("It now looks like this:")
-    rc522.read(blockAddr: 4)
-    print("\n")
+ print("It now looks like this:")
+ rc522.read(blockAddr: 4)
+ print("\n")
 
-    guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 5, sectorkey: key, serNum: uid) == rc522.MI_OK else {
-        print("Error reading block 5")
-        break
-    }
+ guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 5, sectorkey: key, serNum: uid) == rc522.MI_OK else {
+ print("Error reading block 5")
+ break
+ }
 
-    print("\nBlock 5 looked like this:")
-    rc522.read(blockAddr: 5)
-    print("\n")
+ print("\nBlock 5 looked like this:")
+ rc522.read(blockAddr: 5)
+ print("\n")
 
-    print("Writing NDEF message to block 5")
-    rc522.write(blockAddr: 5, writeData: [0x74, 0x2E, 0x63, 0x6F, 0x6D, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
-    print("\n")
+ print("Writing NDEF message to block 5")
+ rc522.write(blockAddr: 5, writeData: [0x74, 0x2E, 0x63, 0x6F, 0x6D, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+ print("\n")
 
-    print("It now looks like this:")
-    rc522.read(blockAddr: 5)
-    print("\n")
+ print("It now looks like this:")
+ rc522.read(blockAddr: 5)
+ print("\n")
 
-    guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 6, sectorkey: key, serNum: uid) == rc522.MI_OK else {
-        print("Error reading block 6")
-        break
-    }
+ guard rc522.auth(authMode: rc522.PICC_AUTHENT1A, blockAddr: 6, sectorkey: key, serNum: uid) == rc522.MI_OK else {
+ print("Error reading block 6")
+ break
+ }
 
-    print("\nBlock 6 looked like this:")
-    rc522.read(blockAddr: 6)
-    print("\n")
+ print("\nBlock 6 looked like this:")
+ rc522.read(blockAddr: 6)
+ print("\n")
 
-    print("Writing NDEF message to block 6")
-    rc522.write(blockAddr: 6, writeData: Array(repeating: (0x00 as Byte), count: 16))
-    print("\n")
+ print("Writing NDEF message to block 6")
+ rc522.write(blockAddr: 6, writeData: Array(repeating: (0x00 as Byte), count: 16))
+ print("\n")
 
-    print("It now looks like this:")
-    rc522.read(blockAddr: 6)
-    print("\n")
+ print("It now looks like this:")
+ rc522.read(blockAddr: 6)
+ print("\n")
 
-    rc522.stopCrypto()
-    */
-}
+ rc522.stopCrypto()
+ */
+//}
 
-dispatchMain()
+//dispatchMain()
+
+#endif
