@@ -1,10 +1,3 @@
-//
-//  PinController.swift
-//  quest
-//
-//  Created by David Jangdal on 2024-06-03.
-//
-
 import Foundation
 #if os(Linux)
 import SwiftyGPIO
@@ -18,8 +11,9 @@ class PinController {
     init() {
 #if os(Linux)
         let gpios = SwiftyGPIO.GPIOs(for:.RaspberryPi4)
-        pin2 = gpios[.P2]!
+        pin2 = gpios[.P26]!
         pin2.direction = .IN
+        pin2.pull = .down
         
         pin2.onRaising { gpio in
             print("Transition to 1, current value:" + String(gpio.value))
@@ -34,11 +28,11 @@ class PinController {
     }
     
     func isPressingButton() -> Bool {
-#if os(OSX)
-        return false
-#elseif(Linux)
+#if os(Linux)
         print("Button value \(pin2.value)")
         return pin2.value == 1
+#else
+        return false
 #endif
     }
 }
