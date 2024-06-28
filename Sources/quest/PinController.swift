@@ -29,7 +29,7 @@ class PinController {
     
     func isPressingButton() -> Bool {
 #if os(Linux)
-        print("Button value \(pin2.value)")
+        // print("Button value \(pin2.value)")
         return pin2.value == 1
 #else
         return false
