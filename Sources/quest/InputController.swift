@@ -1,5 +1,4 @@
 import Foundation
-import MFRC522
 
 enum InputType: Equatable {
     case rfid(id: Int, value: Int)
@@ -10,10 +9,19 @@ enum InputType: Equatable {
 
 class InputController {
     private let pinController = PinController()
-    private let mfrc522 = MFRC522()
+    private let rfidController = RFIDController()
+
     func getInput() -> InputType {
 #if os(Linux)
         while(true) {
+            if let uid = rfidController.readCard {
+                if let value = rfidController.readValue() {
+                    return .rfid(id: uid, value: value)
+                }
+            }
+            else if pinController.isPressingButton() {
+                return .buttonPressed
+            }
             // Check if RFID Tag is present and return
             // Check if button pressed and return
 
