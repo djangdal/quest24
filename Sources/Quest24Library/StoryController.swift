@@ -1,11 +1,15 @@
 import Foundation
 
-class StoryController {
+final public class StoryController {
     private var lastSoundDate: Date?
     private var lastSound: Sound?
-    private let soundPlayer = SoundPlayer()
+    private let soundPlayer: SoundPlayerProtocol
 
-    func tellIntroductionStory() {
+    public init(soundPlayer: SoundPlayerProtocol) {
+        self.soundPlayer = soundPlayer
+    }
+
+    public func tellIntroductionStory() {
         guard let lastSound, let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) < 10 else {
             soundPlayer.play(sound: .noToken1)
             self.lastSound = .noToken1
@@ -32,7 +36,7 @@ class StoryController {
         soundPlayer.play(sound: newSound)
     }
 
-    func tellStoryFor(level: Level) {
+    public func tellStoryFor(level: Level) {
         switch level {
         case .level1:
             print("Instructions on how to do level 1")

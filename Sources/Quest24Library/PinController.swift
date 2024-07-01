@@ -3,12 +3,12 @@ import Foundation
 import SwiftyGPIO
 #endif
 
-class PinController {
+final public class PinController {
 #if os(Linux)
     let pin2: GPIO
 #endif
     
-    init() {
+    public init() {
 #if os(Linux)
         let gpios = SwiftyGPIO.GPIOs(for:.RaspberryPi4)
         pin2 = gpios[.P26]!
@@ -26,13 +26,24 @@ class PinController {
         }
 #endif
     }
-    
-    func isPressingButton() -> Bool {
+
+    public func isPressingButton() -> Bool {
 #if os(Linux)
-        // print("Button value \(pin2.value)")
         return pin2.value == 1
 #else
         return false
+#endif
+    }
+
+    public func showLightsFor(level: Level) {
+#if os(Linux)
+        // Turn on the LED for the level
+#endif
+    }
+
+    public func showAllRed() {
+#if os(Linux)
+        // Turn on the LED for the level
 #endif
     }
 }

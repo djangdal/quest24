@@ -1,4 +1,6 @@
 import Foundation
+import Quest24Library
+
 //import MFRC522
 
 //let group = DispatchGroup()
@@ -182,14 +184,6 @@ import Foundation
 
 
 
-
-
-
- let storyController = StoryController()
- let inputController = InputController()
- let storageController = StorageController()
- let rfidController = RFIDController()
-
 // let mfrc522 = MFRC522()
 // mfrc522.start()
 // print("RFID Reader Initialized")
@@ -242,6 +236,21 @@ import Foundation
         //     }
 //     usleep(500000)  // Sleep for 500 ms
 // }
+
+
+let pinController = PinController()
+let soundPlayer = SoundPlayer()
+let storyController = StoryController(soundPlayer: soundPlayer)
+let storageController = StorageController()
+let rfidController = RFIDController()
+let inputController = InputController(pinController: pinController)
+let quest24 = Quest24(
+    pinController: pinController,
+    storyController: storyController,
+    storageController: storageController,
+    rfidController: rfidController
+)
+
  print("----------Hi and welcome---------------")
  print("Enter \"exit\" to exit")
  print("Simulate button with \"b\"")
@@ -260,27 +269,10 @@ import Foundation
 
  var shouldExit = false
  while(!shouldExit) {
-     switch inputController.getInput() {
-     case .rfid(let id, let value):
-         guard let level = Level(rawValue: value) else {
-             storageController.storeInvalidInput(id: id, value: value)
-             print("Invalid input of level, id: \(id), value: \(value)")
-             continue
-         }
-         if level.isLevelFinished && level != .finishedLevel5 {
-             let nextLevel = level.nextLevel
-//             rfidController.writeNew(level: nextLevel)
-             storageController.storeLevelUpgrade(id: id, for: nextLevel)
-         }
-         storyController.tellStoryFor(level: level)
-     case .buttonPressed:
-         print("Button pressed")
-         storageController.storeButtonPressed()
-         storyController.tellIntroductionStory()
-     case .exit:
+     let input = inputController.getInput()
+     guard input != .exit else {
          shouldExit = true
-     case .unknown:
-         print("Unknown input")
          continue
      }
+     quest24.tick(input: input)
  }

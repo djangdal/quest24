@@ -1,4 +1,4 @@
-enum Level: Int {
+public enum Level: Int {
     case level1 = 10
     case finishedLevel1 = 15
     case level2 = 20
@@ -11,7 +11,7 @@ enum Level: Int {
     case finishedLevel5 = 55
 }
 
-extension Level {
+public extension Level {
     var isLevelFinished: Bool {
         switch self {
         case .level1, .level2, .level3, .level4, .level5: return false
