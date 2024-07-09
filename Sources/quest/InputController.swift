@@ -1,4 +1,5 @@
 import Foundation
+import MFRC522
 
 enum InputType: Equatable {
     case rfid(id: Int, value: Int)
@@ -10,42 +11,22 @@ enum InputType: Equatable {
 class InputController {
     private let pinController = PinController()
     private let rfidController = RFIDController()
+    private let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
     func getInput() -> InputType {
 #if os(Linux)
         while(true) {
-            if let uid = rfidController.readCard {
-                if let value = rfidController.readValue() {
-                    return .rfid(id: uid, value: value)
-                }
-            }
-            else if pinController.isPressingButton() {
+            if let uid = rfidController.readUID() {
+                let intID = rfidController.byteArrayAsInt(bytes: uid)
+                print("The uid \(uid), the id: \(intID)")
+                // if let value = rfidController.readValue(uid: uid, key: key) {
+                //     print("Value: \(value)")
+                //     return .rfid(id: intID, value: value)
+                // }
+            } else if pinController.isPressingButton() {
                 return .buttonPressed
             }
-            // Check if RFID Tag is present and return
-            // Check if button pressed and return
-
-            // let (statusSearch, tagType) = mfrc522.request(reqMode: mfrc522.PICC_REQIDL)
-
-            // If a card is found
-            // if statusSearch == mfrc522.MI_OK {
-            //     print("Card detected")
-                // let (status, uidLittleEndian, uidBigEndian) = mfrc522.SelectTagSN()
-                // if status == mfrc522.MI_OK {
-                //     if let uidLE = uidLittleEndian {
-                //         print("UID as Int (Little Endian): \(uidLE)")
-                //     }
-                //     if let uidBE = uidBigEndian {
-                //         print("UID as Int (Big Endian): \(uidBE)")
-                //     }
-                // } else {
-                //     print("Failed to read UID")
-                // }
-            // } else if pinController.isPressingButton() {
-            //     return .buttonPressed
-            // }
-
-            Thread.sleep(forTimeInterval: 0.1)
+            Thread.sleep(forTimeInterval: 0.5)
         }
 #else
         guard let line = readLine() else { return .unknown }
