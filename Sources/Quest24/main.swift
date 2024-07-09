@@ -1,13 +1,6 @@
 import Foundation
-<<<<<<< HEAD:Sources/quest/main.swift
-=======
 import Quest24Library
-
-//import MFRC522
->>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
-
 import Foundation
-import Glibc
 import SwiftyGPIO
 
 typealias Byte = UInt8
@@ -27,7 +20,9 @@ class MFRC522 {
 
     let PICC_REQIDL: Byte           = 0x26
     let PICC_REQALL: Byte           = 0x52
-    let PICC_ANTICOLL: Byte         = 0x93
+    let PICC_ANTICOLL1: Byte        = 0x93
+    let PICC_ANTICOLL2: Byte        = 0x95
+    let PICC_ANTICOLL3: Byte        = 0x97
     let PICC_SElECTTAG: Byte        = 0x93
     let PICC_AUTHENT1A: Byte        = 0x60
     let PICC_AUTHENT1B: Byte        = 0x61
@@ -317,11 +312,11 @@ class MFRC522 {
         return (status, backBits)
     }
 
-    func anticoll(anticollN: Byte) -> (status: Byte, backData: [Byte]) {
+    func anticoll(anticolN: Byte) -> (status: Byte, backData: [Byte]) {
         write(addr: BitFramingReg, val: 0x00)
 
-        let serNum = [PICC_ANTICOLL, 0x20]
-        var (status, backData, backBits) = toCard(command: PCD_TRANSCEIVE, sendData: serNum)
+        let serNum = [anticolN, 0x20]
+        var (status, backData, _) = toCard(command: PCD_TRANSCEIVE, sendData: serNum)
 
         if status == MI_OK {
             if backData.count == 5 {
@@ -356,8 +351,8 @@ class MFRC522 {
         ]
     }
 
-    func selectTag(serNum: [Byte]) -> Byte {
-        var buf: [Byte] = [PICC_SElECTTAG, 0x70]
+    func selectTag(serNum: [Byte], anticolN: Byte) -> Byte {
+        var buf: [Byte] = [anticolN, 0x70]
         for i in 0 ..< 5 {
             buf.append(serNum[i])
         }
@@ -375,54 +370,46 @@ class MFRC522 {
         }
     }
 
-    func selectTagSN(serNum: [Byte]) -> (Byte, [Byte]) {
-        var validUID = [Byte]()
-        (status, uid) = anticoll()
+    func selectTagSN() -> (Byte, [Byte]) {
+        var valid_uid: [Byte] = []
+        var (status, uid) = anticoll(anticolN: PICC_ANTICOLL1)
+
+        if status != MI_OK {
+            return (MI_ERR, [])
+        }
+
+        if selectTag(serNum: uid, anticolN: PICC_ANTICOLL1) == 0 {
+            return (MI_ERR, [])
+        }
+
+        if uid[0] == 0x88 {
+            valid_uid.append(contentsOf: uid[1...3])
+            (status, uid) = anticoll(anticolN: PICC_ANTICOLL2)
+
+            if status != MI_OK {
+                return (MI_ERR, [])
+            }
+
+            if selectTag(serNum: uid, anticolN: PICC_ANTICOLL2) == 0 {
+                return (MI_ERR, [])
+            }
+
+            if uid[0] == 0x88 {
+                valid_uid.append(contentsOf: uid[1...3])
+                (status, uid) = anticoll(anticolN: PICC_ANTICOLL3)
+
+                if status != MI_OK {
+                    return (MI_ERR, [])
+                }
+
+                if selectTag(serNum: uid, anticolN: PICC_ANTICOLL3) == 0{
+                    return (MI_ERR, [])
+                }
+            }
+        }
+        valid_uid.append(contentsOf: uid[0...4])
+        return (MI_OK, Array(valid_uid.prefix(valid_uid.count - 1)))
     }
-// def SelectTagSN(self):
-//         valid_uid=[]
-//         (status,uid)= self.anticoll(self.PICC_ANTICOLL1)
-//         #print("Select Tag 1:",self.tohexstring(uid))
-//         if status != self.OK:
-//             return  (self.ERR,[])
-        
-//         if self.DEBUG:   print("anticol(1) {}".format(uid))
-//         if self.PcdSelect(uid,self.PICC_ANTICOLL1) == 0:
-//             return (self.ERR,[])
-//         if self.DEBUG:   print("pcdSelect(1) {}".format(uid))
-        
-//         #check if first byte is 0x88
-//         if uid[0] == 0x88 :
-//             #ok we have another type of card
-//             print("It is another type")
-//             valid_uid.extend(uid[1:4])
-//             (status,uid)=self.anticoll(self.PICC_ANTICOLL2)
-//             #print("Select Tag 2:",self.tohexstring(uid))
-//             if status != self.OK:
-//                 return (self.ERR,[])
-//             if self.DEBUG: print("Anticol(2) {}".format(uid))
-//             rtn =  self.PcdSelect(uid,self.PICC_ANTICOLL2)
-//             if self.DEBUG: print("pcdSelect(2) return={} uid={}".format(rtn,uid))
-//             if rtn == 0:
-//                 return (self.ERR,[])
-//             if self.DEBUG: print("PcdSelect2() {}".format(uid))
-//             #now check again if uid[0] is 0x88
-//             if uid[0] == 0x88 :
-//                 valid_uid.extend(uid[1:4])
-//                 (status , uid) = self.anticoll(self.PICC_ANTICOLL3)
-//                 #print("Select Tag 3:",self.tohexstring(uid))
-//                 if status != self.OK:
-//                     return (self.ERR,[])
-//                 if self.DEBUG: print("Anticol(3) {}".format(uid))
-//                 if self.PcdSelect(uid,self.PICC_ANTICOLL3) == 0:
-//                     return (self.ERR,[])
-//                 if self.DEBUG: print("PcdSelect(3) {}".format(uid))
-//         valid_uid.extend(uid[0:5])
-//         # if we are here than the uid is ok
-//         # let's remove the last BYTE whic is the XOR sum
-        
-//         return (self.OK , valid_uid[:len(valid_uid)-1])
-//         #return (self.OK , valid_uid)
 
     func auth(authMode: Byte, blockAddr: Byte, sectorkey: [Byte], serNum: [Byte]) -> Byte {
         var buff: [Byte] = []
@@ -509,20 +496,21 @@ while true {
     }
 
     // Get the UID of the card
-    let (statusUUID, uid) = rc522.anticoll()
+//    let (statusUUID, uid) = rc522.anticoll(anticollN: PICC_ANTICOLL1)
 
+    let (statusUUID, uid) = rc522.selectTagSN()
+    print("UID: \(uid)")
     // If we have the UID, continue
     guard statusUUID == rc522.MI_OK else { break }
 
     // Print UID
-    print("UID: \(uid)")
     print("Card read UID: \(uid[0]), \(uid[1]), \(uid[2]), \(uid[3])")
 
     // This is the default key for authentication
     let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
     // Select the scanned tag
-    rc522.selectTag(serNum: uid)
+//    let _ = rc522.selectTag(serNum: uid)
 
     /*
     Read.py
@@ -654,24 +642,6 @@ dispatchMain()
 //  let storageController = StorageController()
 //  let rfidController = RFIDController()
 
-<<<<<<< HEAD:Sources/quest/main.swift
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -742,7 +712,6 @@ let quest24 = Quest24(
     rfidController: rfidController
 )
 
->>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
  print("----------Hi and welcome---------------")
  print("Enter \"exit\" to exit")
  print("Simulate button with \"b\"")
@@ -758,10 +727,6 @@ let quest24 = Quest24(
  print("finishedLevel4 = 45")
  print("level5 = 50")
  print("finishedLevel5 = 55")
-
-<<<<<<< HEAD:Sources/quest/main.swift
-
-
 
 //  var shouldExit = false
 //  while(!shouldExit) {
@@ -852,15 +817,12 @@ let quest24 = Quest24(
 
 // }
 
-// dispatchMain()
-=======
- var shouldExit = false
- while(!shouldExit) {
-     let input = inputController.getInput()
-     guard input != .exit else {
-         shouldExit = true
-         continue
-     }
-     quest24.tick(input: input)
- }
->>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
+// var shouldExit = false
+// while(!shouldExit) {
+//     let input = inputController.getInput()
+//     guard input != .exit else {
+//         shouldExit = true
+//         continue
+//     }
+//     quest24.tick(input: input)
+// }
