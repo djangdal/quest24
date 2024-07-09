@@ -1,0 +1,77 @@
+import XCTest
+@testable import Quest24Library
+
+class QuestTests: XCTestCase {
+
+    private var soundPlayer: MockSoundPlayer!
+    private var pinController: PinController!
+    private var storyController: StoryController!
+    private var storageController: StorageController!
+    private var rfidController: MockRFIDController!
+    private var inputController: InputController!
+    private var quest: Quest24!
+
+    override func setUp() {
+        super.setUp()
+        self.soundPlayer = MockSoundPlayer()
+        self.pinController = PinController()
+        self.storyController = StoryController(soundPlayer: soundPlayer)
+        self.storageController = StorageController()
+        self.rfidController = MockRFIDController()
+        self.inputController = InputController(pinController: pinController)
+        self.quest = Quest24(
+            pinController: pinController,
+            storyController: storyController,
+            storageController: storageController,
+            rfidController: rfidController
+        )
+    }
+
+    func testQuest_unseenCard_haveStartedQuest() {
+        quest.tick(input: .rfid(id: 1, value: 3232342))
+        let hasStarted1 = storageController.hasStartedQuestFor(id: 1)
+        let hasStarted0 = storageController.hasStartedQuestFor(id: 0)
+        XCTAssertTrue(hasStarted1)
+        XCTAssertFalse(hasStarted0)
+    }
+
+    func testQuest_whenStoredLevel_hasStartedQuest() {
+        storageController.storeLevelUpgrade(id: 10, for: .level2)
+        quest.tick(input: .rfid(id: 10, value: Level.finishedLevel2.rawValue))
+        let level = storageController.levelFor(id: 10)
+        XCTAssertEqual(level, .level3)
+    }
+
+    func testStorage_questChain() {
+        quest.tick(input: .rfid(id: 10, value: 21221))
+        XCTAssertEqual(Level.level1, storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level1)
+
+        quest.tick(input: .rfid(id: 10, value: 15))
+        XCTAssertEqual(rfidController.writtenLevel, .level2)
+
+        quest.tick(input: .rfid(id: 10, value: 25))
+        XCTAssertEqual(rfidController.writtenLevel, .level3)
+    }
+}
+
+final class MockSoundPlayer: SoundPlayerProtocol {
+    func play(sound: Quest24Library.Sound) {
+    }
+}
+
+final class MockRFIDController: RFIDControllerProtocol {
+    var writtenLevel: Level?
+
+    func writeNew(level: Quest24Library.Level) {
+        self.writtenLevel = level
+    }
+    
+    func readCard() -> UInt32? {
+        return nil
+    }
+    
+    func readValue() -> UInt32? {
+        return nil
+    }
+}

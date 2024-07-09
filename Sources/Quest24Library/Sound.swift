@@ -1,6 +1,4 @@
-import PythonKit
-
-enum Sound: String {
+public enum Sound: String {
     case noToken1 = "no-token-1"
     case noToken2 = "no-token-2"
     case noToken3 = "no-token-3"
@@ -13,18 +11,4 @@ enum Sound: String {
     case noToken10 = "no-token-10"
     case noToken11 = "no-token-11"
     case noToken12 = "no-token-12"
-}
-
-final class SoundPlayer {
-    private let pythonPlayer: PythonObject
-    
-    init() {
-        let sys = Python.import("sys")
-        sys.path.append("Sources/quest/")
-        pythonPlayer = Python.import("sound")
-    }
-    
-    public func play(sound: Sound) {
-        pythonPlayer.play(sound.rawValue)
-    }
 }

@@ -1,4 +1,10 @@
 import Foundation
+<<<<<<< HEAD:Sources/quest/main.swift
+=======
+import Quest24Library
+
+//import MFRC522
+>>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
 
 import Foundation
 import Glibc
@@ -648,6 +654,95 @@ dispatchMain()
 //  let storageController = StorageController()
 //  let rfidController = RFIDController()
 
+<<<<<<< HEAD:Sources/quest/main.swift
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// let mfrc522 = MFRC522()
+// mfrc522.start()
+// print("RFID Reader Initialized")
+// func readUIDAndBlockData() {
+//     mfrc522.start()
+
+//     let (status1, _) = mfrc522.request(reqMode: mfrc522.PICC_REQIDL)
+//     if status1 != mfrc522.MI_OK {
+//         print("No tag detected")
+//         return
+//     }
+
+//     let(status, uid) = mfrc522.anticoll()
+//     if status != mfrc522.MI_OK {
+//         print("Failed to read UID")
+//         return
+//     }
+
+//     let serNum = uid
+//     print("UID: \(uid.map { String(format: "%02hhx", $0) }.joined(separator: ", "))")
+
+//     let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF] // Default key
+
+//     let authStatus = mfrc522.auth(authMode: mfrc522.PICC_AUTHENT1A, blockAddr: 1, sectorkey: key, serNum: uid)
+//     if authStatus != mfrc522.MI_OK {
+//         print("Authentication error")
+//         return
+//     }
+
+//     mfrc522.read(blockAddr: 1)
+//     mfrc522.stopCrypto()
+// }
+// while true {
+//     readUIDAndBlockData()
+    // let (statusSearch, tagType) = mfrc522.request(reqMode: mfrc522.PICC_REQIDL)
+
+        // If a card is found
+        // if statusSearch == mfrc522.MI_OK {
+        //     print("Card detected")
+        //     let (status, uidLittleEndian, uidBigEndian) = mfrc522.SelectTagSN()
+        //     if status == mfrc522.MI_OK {
+        //         if let uidLE = uidLittleEndian {
+        //             print("UID as Int (Little Endian): \(uidLE)")
+        //         }
+        //         if let uidBE = uidBigEndian {
+        //             print("UID as Int (Big Endian): \(uidBE)")
+        //         }
+        //     } else {
+        //         print("Failed to read UID")
+        //     }
+//     usleep(500000)  // Sleep for 500 ms
+// }
+
+
+let pinController = PinController()
+let soundPlayer = SoundPlayer()
+let storyController = StoryController(soundPlayer: soundPlayer)
+let storageController = StorageController()
+let rfidController = RFIDController()
+let inputController = InputController(pinController: pinController)
+let quest24 = Quest24(
+    pinController: pinController,
+    storyController: storyController,
+    storageController: storageController,
+    rfidController: rfidController
+)
+
+>>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
  print("----------Hi and welcome---------------")
  print("Enter \"exit\" to exit")
  print("Simulate button with \"b\"")
@@ -664,6 +759,7 @@ dispatchMain()
  print("level5 = 50")
  print("finishedLevel5 = 55")
 
+<<<<<<< HEAD:Sources/quest/main.swift
 
 
 
@@ -757,3 +853,14 @@ dispatchMain()
 // }
 
 // dispatchMain()
+=======
+ var shouldExit = false
+ while(!shouldExit) {
+     let input = inputController.getInput()
+     guard input != .exit else {
+         shouldExit = true
+         continue
+     }
+     quest24.tick(input: input)
+ }
+>>>>>>> 8d30c43213ed9e920a73390dc0e8044cf4d1c2de:Sources/Quest24/main.swift
