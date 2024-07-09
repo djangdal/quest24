@@ -5,7 +5,7 @@ import SwiftyGPIO
 
 typealias Byte = UInt8
 
-class MFRC522 {
+class MFRC5221 {
     let NRSTPD: GPIOName            = .P22
 
     let MAX_LEN: Int                = 16
@@ -362,7 +362,7 @@ class MFRC522 {
         let (status, backData, backLen) = toCard(command: PCD_TRANSCEIVE, sendData: buf)
 
         if status == MI_OK && backLen == 0x18 {
-            print("Size: \(backData[0])")
+            print("Size should not be zero: \(backData[0])")
             return backData[0]
         }
         else {
@@ -383,9 +383,12 @@ class MFRC522 {
         }
 
         if uid[0] == 0x88 {
+            print("We have the 88")
             valid_uid.append(contentsOf: uid[1...3])
             (status, uid) = anticoll(anticolN: PICC_ANTICOLL2)
-
+            print("Valid uid is now \(valid_uid)")
+            print("The status id \(status)")
+            
             if status != MI_OK {
                 return (MI_ERR, [])
             }
@@ -477,7 +480,7 @@ signal(SIGINT) { signal in
 }
 
 // Create an object of the class MFRC522
-let rc522 = MFRC522()
+let rc522 = MFRC5221()
 
 // Welcome message
 print("Welcome to the MFRC522 data read example")

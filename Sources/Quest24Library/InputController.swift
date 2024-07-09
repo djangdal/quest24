@@ -18,12 +18,12 @@ final public class InputController {
     public func getInput() -> InputType {
 #if os(Linux)
         while(true) {
-            if let uid = rfidController.readCard, let value = rfidController.readValue() {
-                return .rfid(id: uid, value: value)
-            }
-            else if pinController.isPressingButton() {
-                return .buttonPressed
-            }
+            // if let uid = rfidController.readCard, let value = rfidController.readValue() {
+            //     return .rfid(id: uid, value: value)
+            // }
+            // else if pinController.isPressingButton() {
+            //     return .buttonPressed
+            // }
             Thread.sleep(forTimeInterval: 0.1)
         }
 #else
