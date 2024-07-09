@@ -10,10 +10,10 @@ final class RFIDController {
     }
 
     func readUID() -> [Byte]? {
-        let (statusSearch, _) = mfrc522.request(mode: mfrc522.PICC_REQIDL)
+        // let (statusSearch, _) = mfrc522.request(mode: mfrc522.PICC_REQIDL)
 
         // If a card is found
-        guard statusSearch == mfrc522.MI_OK else { return nil }
+        // guard statusSearch == mfrc522.MI_OK else { return nil }
 
         // Get the UID of the card
         // let (statusUUID, uid) = mfrc522.anticoll()
@@ -25,15 +25,16 @@ final class RFIDController {
     }
 
     func readValue(uid: [Byte], key: [Byte]) -> Int? {
-        _ = mfrc522.selectTag(serNum: uid)
+        // _ = mfrc522.selectTag(serNum: uid)
 
-        let status = mfrc522.auth(authMode: mfrc522.PICC_AUTHENT1A, blockAddr: 1, sectorkey: key, serNum: uid)
-        // Check if authenticated
-        guard status == mfrc522.MI_OK else { return nil }
-        let byteArray = mfrc522.read(blockAddr: 1)
-        let intValue = byteArrayAsInt(bytes: byteArray)
-        mfrc522.stopCrypto()
-        return intValue
+        // let status = mfrc522.auth(authMode: mfrc522.PICC_AUTHENT1A, blockAddr: 1, sectorkey: key, serNum: uid)
+        // // Check if authenticated
+        // guard status == mfrc522.MI_OK else { return nil }
+        // let byteArray = mfrc522.read(blockAddr: 1)
+        // let intValue = byteArrayAsInt(bytes: byteArray)
+        // mfrc522.stopCrypto()
+        // return intValue
+        return nil
     }
 
     func byteArrayAsInt(bytes: [Byte]) -> Int {
