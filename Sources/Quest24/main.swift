@@ -185,6 +185,7 @@ class MFRC5221 {
             ((addr << 1) & 0x7E) | 0x80,
             0
         ])
+        // print("In the _rreg with val \(val)")
         return val[1]
     }
 
@@ -196,7 +197,9 @@ class MFRC5221 {
         let pOut = calulateCRC(pIndata: recvData)
         recvData.append(pOut[0])
         recvData.append(pOut[1])
+        print("Did crc with data \(recvData)")
         let (status, backData, backLen) = toCard(command: PCD_TRANSCEIVE, sendData: recvData)
+        print("Did ToCard in read with status \(status) backdata: \(backData), backlen: \(backLen)")
         if status != MI_OK {
             print("Error while reading!")
         }
@@ -278,19 +281,23 @@ class MFRC5221 {
 
                 if command == PCD_TRANSCEIVE {
                     var size = Int(read(addr: FIFOLevelReg))
+                    print("Reading n size: \(size)")
                     let lastBits = Int(read(addr: ControlReg) & 0x07)
+                    print("Reading lBits: \(lastBits)")
 
                     if lastBits != 0 {
                         backLen = (size - 1) * 8 + lastBits
                     } else {
                         backLen = size * 8
                     }
+                    print("backlen: \(backLen)")
 
                     if size == 0 { size = 1 }
                     if size > MAX_LEN { size = MAX_LEN }
                     for _ in 0 ..< size {
                         backData.append(read(addr: FIFODataReg))
                     }
+                    print("backData: \(backData)")
                 }
             } else {
                 status = MI_ERR
@@ -353,12 +360,14 @@ class MFRC5221 {
 
     func selectTag(serNum: [Byte], anticolN: Byte) -> Byte {
         var buf: [Byte] = [anticolN, 0x70]
-        for i in 0 ..< 5 {
+        print("We have sernum count \(serNum.count)")
+        for i in 0 ..< serNum.count {
             buf.append(serNum[i])
         }
         let pOut = calulateCRC(pIndata: buf)
         buf.append(pOut[0])
         buf.append(pOut[1])
+        print("The buffer is now \(buf)")
         let (status, backData, backLen) = toCard(command: PCD_TRANSCEIVE, sendData: buf)
 
         if status == MI_OK && backLen == 0x18 {
@@ -381,23 +390,24 @@ class MFRC5221 {
         if selectTag(serNum: uid, anticolN: PICC_ANTICOLL1) == 0 {
             return (MI_ERR, [])
         }
+        print("Anticoll 1 uid: \(uid)")
 
         if uid[0] == 0x88 {
-            print("We have the 88")
             valid_uid.append(contentsOf: uid[1...3])
             (status, uid) = anticoll(anticolN: PICC_ANTICOLL2)
-            print("Valid uid is now \(valid_uid)")
+            print("anticoll 2 uid: \(uid) Valid uid \(valid_uid)")
             print("The status id \(status)")
-            
+
             if status != MI_OK {
                 return (MI_ERR, [])
             }
 
-            if selectTag(serNum: uid, anticolN: PICC_ANTICOLL2) == 0 {
-                return (MI_ERR, [])
-            }
+            // if selectTag(serNum: uid, anticolN: PICC_ANTICOLL2) == 0 {
+            //     return (MI_ERR, [])
+            // }
 
             if uid[0] == 0x88 {
+                print("It is 88 again")
                 valid_uid.append(contentsOf: uid[1...3])
                 (status, uid) = anticoll(anticolN: PICC_ANTICOLL3)
 
@@ -489,7 +499,7 @@ print("Press Ctrl-C to stop.")
 while true {
     // Scan for cards
     let (statusSearch, tagType) = rc522.request(reqMode: rc522.PICC_REQIDL)
-
+    print("-------------------------")
     // If a card is found
     if statusSearch == rc522.MI_OK {
         print("Card detected")
@@ -507,10 +517,10 @@ while true {
     guard statusUUID == rc522.MI_OK else { break }
 
     // Print UID
-    print("Card read UID: \(uid[0]), \(uid[1]), \(uid[2]), \(uid[3])")
+    // print("Card read UID: \(uid[0]), \(uid[1]), \(uid[2]), \(uid[3])")
 
     // This is the default key for authentication
-    let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+    // let key: [Byte] = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
     // Select the scanned tag
 //    let _ = rc522.selectTag(serNum: uid)
@@ -550,28 +560,28 @@ while true {
     //     continue
     // }
 
-    print("Sector 8 looked like this:")
+    print("----will now read the data-----")
     rc522.read(blockAddr: 8)
-    print("\n")
+    // print("\n")
 
-    print("Sector 8 will now be filled with 0xFF:")
-    // Write the data
-    rc522.write(blockAddr: 8, writeData: Array(repeating: (0xFF as Byte), count: 16))
-    print("\n")
+    // print("Sector 8 will now be filled with 0xFF:")
+    // // Write the data
+    // rc522.write(blockAddr: 8, writeData: Array(repeating: (0xFF as Byte), count: 16))
+    // print("\n")
 
-    print("It now looks like this:")
-    // Check to see if it was written
-    rc522.read(blockAddr: 8)
-    print("\n")
+    // print("It now looks like this:")
+    // // Check to see if it was written
+    // rc522.read(blockAddr: 8)
+    // print("\n")
 
-    print("Now we fill it with 0x00:")
-    rc522.write(blockAddr: 8, writeData: Array(repeating: (0x00 as Byte), count: 16))
-    print("\n")
+    // print("Now we fill it with 0x00:")
+    // rc522.write(blockAddr: 8, writeData: Array(repeating: (0x00 as Byte), count: 16))
+    // print("\n")
 
-    print("It is now empty:")
-    // Check to see if it was written
-    rc522.read(blockAddr: 8)
-    print("\n")
+    // print("It is now empty:")
+    // // Check to see if it was written
+    // rc522.read(blockAddr: 8)
+    // print("\n")
 
     // Stop    
     rc522.stopCrypto()
