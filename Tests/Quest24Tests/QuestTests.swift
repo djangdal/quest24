@@ -18,7 +18,7 @@ class QuestTests: XCTestCase {
         self.storyController = StoryController(soundPlayer: soundPlayer)
         self.storageController = StorageController()
         self.rfidController = MockRFIDController()
-        self.inputController = InputController(pinController: pinController)
+        self.inputController = InputController(pinController: pinController, rfidController: rfidController)
         self.quest = Quest24(
             pinController: pinController,
             storyController: storyController,
@@ -62,16 +62,11 @@ final class MockSoundPlayer: SoundPlayerProtocol {
 
 final class MockRFIDController: RFIDControllerProtocol {
     var writtenLevel: Level?
+    func read() -> (Int, Int)? {
+        return nil
+    }
 
-    func writeNew(level: Quest24Library.Level) {
+    func write(level: Quest24Library.Level) {
         self.writtenLevel = level
-    }
-    
-    func readCard() -> UInt32? {
-        return nil
-    }
-    
-    func readValue() -> UInt32? {
-        return nil
     }
 }

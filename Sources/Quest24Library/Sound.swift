@@ -11,4 +11,11 @@ public enum Sound: String {
     case noToken10 = "no-token-10"
     case noToken11 = "no-token-11"
     case noToken12 = "no-token-12"
+    case level1 = "level-1"
+    case level1Finished = "level-1-finished"
+    case level2 = "level-2"
+    case level2Finished = "level-2-finished"
 }
+
+//https://ttsmp3.com/ai
+// AI voice - speed 1.2

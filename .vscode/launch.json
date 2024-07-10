@@ -23,6 +23,30 @@
             "name": "Release quest",
             "program": "${workspaceFolder:quest24}/.build/release/quest",
             "preLaunchTask": "swift: Build Release quest"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:quest24}",
+            "name": "Debug Quest24",
+            "program": "${workspaceFolder:quest24}/.build/debug/Quest24",
+            "preLaunchTask": "swift: Build Debug Quest24"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:quest24}",
+            "name": "Release Quest24",
+            "program": "${workspaceFolder:quest24}/.build/release/Quest24",
+            "preLaunchTask": "swift: Build Release Quest24"
         }
     ]
 }

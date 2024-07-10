@@ -9,21 +9,22 @@ public enum InputType: Equatable {
 
 final public class InputController {
     private let pinController: PinController
-    private let rfidController = RFIDController()
+    private let rfidController: RFIDControllerProtocol
 
-    public init(pinController: PinController) {
+    public init(pinController: PinController, rfidController: RFIDControllerProtocol) {
         self.pinController = pinController
+        self.rfidController = rfidController
     }
     
     public func getInput() -> InputType {
 #if os(Linux)
         while(true) {
-            // if let uid = rfidController.readCard, let value = rfidController.readValue() {
-            //     return .rfid(id: uid, value: value)
-            // }
-            // else if pinController.isPressingButton() {
-            //     return .buttonPressed
-            // }
+            if let (uid, value) = rfidController.read() {
+                return .rfid(id: uid, value: value)
+            }
+            else if pinController.isPressingButton() {
+                return .buttonPressed
+            }
             Thread.sleep(forTimeInterval: 0.1)
         }
 #else

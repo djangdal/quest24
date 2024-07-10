@@ -30,6 +30,7 @@ final public class StoryController {
         case .noToken10: newSound = .noToken11
         case .noToken11: newSound = .noToken12
         case .noToken12: newSound = .noToken12
+        default: return
         }
         self.lastSound = newSound
         self.lastSoundDate = Date()
@@ -39,13 +40,17 @@ final public class StoryController {
     public func tellStoryFor(level: Level) {
         switch level {
         case .level1:
-            print("Instructions on how to do level 1")
+            print("Welcome, you can now go and do level 1")
+            soundPlayer.play(sound: .level1)
         case .finishedLevel1:
             print("Congratulations on finishing level 1, here are instruction for level 2")
+            soundPlayer.play(sound: .level1Finished)
         case .level2:
-            print("Repeat instructions for level 2")
+            print("Here are the instructions for level 2 again")
+            soundPlayer.play(sound: .level2)
         case .finishedLevel2:
             print("Congratulations on finishing level 2, here are instruction for level 3")
+            soundPlayer.play(sound: .level2Finished)
         case .level3:
             print("Repeat instructions for level 3")
         case .finishedLevel3:

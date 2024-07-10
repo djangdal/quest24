@@ -23,7 +23,7 @@ public final class Quest24 {
             // If we don't have a level stored for id, start a new quest
             guard storageController.hasStartedQuestFor(id: id) else {
                 print("Starting quest for \(id)")
-                rfidController.writeNew(level: .level1)
+                rfidController.write(level: .level1)
                 storageController.storeLevelUpgrade(id: id, for: .level1)
                 pinController.showLightsFor(level: .level1)
                 storyController.tellStoryFor(level: .level1)
@@ -41,7 +41,7 @@ public final class Quest24 {
             // If they have just finished their level, except final level, upgrade them
             if level.isLevelFinished && level != .finishedLevel5 {
                 let nextLevel = level.nextLevel
-                rfidController.writeNew(level: nextLevel)
+                rfidController.write(level: nextLevel)
                 storageController.storeLevelUpgrade(id: id, for: nextLevel)
             }
             pinController.showLightsFor(level: level)

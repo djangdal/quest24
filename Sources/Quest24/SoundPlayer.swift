@@ -6,7 +6,7 @@ final public class SoundPlayer: SoundPlayerProtocol {
     
     public init() {
         let sys = Python.import("sys")
-        sys.path.append("Sources/")
+        sys.path.append("Sources/Quest24")
         pythonPlayer = Python.import("sound")
     }
     
