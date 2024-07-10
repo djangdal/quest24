@@ -107,7 +107,7 @@ class MFRC5221 {
     let Reserved34: Byte            = 0x3F
 
     var serNum: [Byte]              = []
-    let board: SupportedBoard       = .RaspberryPi3
+    let board: SupportedBoard       = .RaspberryPi4
     let speed: UInt32               = 1000000
     let spi: SysFSSPI
     let gpios: [GPIOName: GPIO]

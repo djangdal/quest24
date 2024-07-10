@@ -38,8 +38,9 @@ final public class RFIDController: RFIDControllerProtocol {
         // guard statusUUID == mfrc522.MI_OK else { return nil }
         // return uid
         return nil
+#else
+        return nil
 #endif
-        // return nil
     }
 
     public func readValue() -> UInt32? {
