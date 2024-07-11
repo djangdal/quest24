@@ -24,6 +24,7 @@ public final class Quest24 {
             guard storageController.hasStartedQuestFor(id: id) else {
                 print("Starting quest for \(id)")
                 rfidController.write(level: .level1)
+                // Should check here that write was successfull
                 storageController.storeLevelUpgrade(id: id, for: .level1)
                 pinController.showLightsFor(level: .level1)
                 storyController.tellStoryFor(level: .level1)
@@ -42,6 +43,7 @@ public final class Quest24 {
             if level.isLevelFinished && level != .finishedLevel5 {
                 let nextLevel = level.nextLevel
                 rfidController.write(level: nextLevel)
+                // Check here that the new level was written
                 storageController.storeLevelUpgrade(id: id, for: nextLevel)
             }
             pinController.showLightsFor(level: level)
