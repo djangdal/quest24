@@ -27,6 +27,9 @@ class QuestTests: XCTestCase {
         )
     }
 
+    // Add a test where the write of starting and/or new level is successfull
+    //Verify that new level is written before showing those instructions
+
     func testQuest_unseenCard_haveStartedQuest() {
         quest.tick(input: .rfid(id: 1, value: 3232342))
         let hasStarted1 = storageController.hasStartedQuestFor(id: 1)
