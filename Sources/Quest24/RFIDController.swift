@@ -17,11 +17,18 @@ final public class RFIDController: RFIDControllerProtocol {
     public func read() -> (Int, Int)? {
 #if os(Linux)
         let input = pythonPlayer.read()
-        print("saker \(input)")
-        guard let uid = input.0 as? Int, let value = input.1 as? Int else { return nil }
-        return (uid, value)
-#endif
+        // print("saker \(input)")
+        let tuple = input.tuple2
+        guard tuple.0 != Python.None, let uid = [UInt8](tuple.0) else { return nil }
+        let uidInt = convertToInt(array: uid)
+        // print("Saker uidInt \(uidInt), uid: \(uid)")
+        guard tuple.1 != Python.None, let value = Int(tuple.1) else { return nil }
+        // print("Saker value \(value)")
+        // return nil
+        return (uidInt, value)
+#else
         return nil
+#endif
     }
 
     public func write(level: Level) {
@@ -30,6 +37,14 @@ final public class RFIDController: RFIDControllerProtocol {
         print("did saker")
 #endif
     }
+
+    private func convertToInt(array: [UInt8]) -> Int {
+        var result: Int = 0
+        for byte in array {
+            result = (result << 8) | Int(byte)
+        }
+    return result
+}
 }
 
 //final public class RFIDController: RFIDControllerProtocol {
