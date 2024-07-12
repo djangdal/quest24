@@ -1,5 +1,5 @@
 from mfrc522 import MFRC522
-from machine import Pin
+from machine import Pin, deepsleep
 import utime
 
 from os import uname
@@ -9,7 +9,6 @@ thisLevelCompletion = thisLevel + 5
  
 red = Pin(0, Pin.OUT)
 green = Pin(1, Pin.OUT)
-blue = Pin(2, Pin.OUT)
 
 def uidToString(uid):
     mystring = ""
@@ -26,25 +25,17 @@ def uidToInt(uid):
         result = (result << 8) | b
     return result
 
-def greenLight(rdr):
+def greenLight():
     red.value(0)
     green.value(1)
-    blue.value(0)
     
-def redLight(rdr):
+def redLight():
     red.value(1)
     green.value(0)
-    blue.value(0)
-
-def blueLight(rdr):
-    red.value(0)
-    green.value(0)
-    blue.value(1)
     
-def noLight(rdr):
+def noLight():
     red.value(0)
     green.value(0)
-    blue.value(0)
 
 def do_read():
     rdr = MFRC522(sck=6,mosi=7,miso=4,rst=22,cs=5)
@@ -68,9 +59,9 @@ def do_read():
             (stat, uid) = rdr.SelectTagSN()
             if stat != rdr.OK:
                 print("UID read not OK")
-                redLight(rdr)
+                redLight()
                 utime.sleep_ms(2000)
-                noLight(rdr)
+                noLight()
                 continue
             
             # Read the data on the card
@@ -78,9 +69,9 @@ def do_read():
             read_status, read_data = rdr.read(addr)
             if len(read_data) < 1:
                 print("Incorrect data on tag")
-                redLight(rdr)
+                redLight()
                 utime.sleep_ms(2000)
-                noLight(rdr)
+                noLight()
                 continue
             level = read_data[0]
             uidInt = uidToInt(uid)
@@ -97,33 +88,29 @@ def do_read():
             read_status, read_data = rdr.read(addr)
             if len(read_data) < 1:
                 print("Incorrect data on tag")
-                redLight(rdr)
+                redLight()
                 utime.sleep_ms(2000)
-                noLight(rdr)
+                noLight()
                 continue
             level = read_data[0]
             
             # Check that the tag has this stations completion value
             if level != thisLevelCompletion:
-                # If level is outside quest range, show red
-                if level < 0 or level > 100:
-                    redLight(rdr)
-                    print("Tag does not have correct level: ", level, " showing red light")
-                else:
-                    print("Tag has another stations level: ", level, " showing blue light")
-                    blueLight(rdr)
+                redLight()
                 utime.sleep_ms(2000)
-                noLight(rdr)
+                noLight()
                 continue
 
             # Tag has the correct level, show green light
             print("Tag %s" % uidInt, " has correct level: %s", level, " Showing green light")
-            greenLight(rdr)
+            greenLight()
             utime.sleep_ms(2000)
-            noLight(rdr)
+            noLight()
 
     except KeyboardInterrupt:
         print("Bye")
-            
+
 do_read()
+
+
 

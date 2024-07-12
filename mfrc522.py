@@ -486,3 +486,4 @@ class MFRC522:
                 return True
         return False
                     
+
