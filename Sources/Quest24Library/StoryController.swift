@@ -52,17 +52,26 @@ final public class StoryController {
             print("Congratulations on finishing level 2, here are instruction for level 3")
             soundPlayer.play(sound: .level2Finished)
         case .level3:
-            print("Repeat instructions for level 3")
+            print("Oh, you didnt understand it the first time. Here are the instructions again for level 3")
+            soundPlayer.play(sound: .level3)
         case .finishedLevel3:
-            print("Congratulations on finishing level 3, here are instruction for level 4")
+            print("Wow, you just finished level 3, halfway there!. Now you need to scan box number 4")
+            soundPlayer.play(sound: .level3Finished)
         case .level4:
-            print("Repeat instructions for level 4")
+            print("Yeah thats my fault, you just need to scan box 4")
+            soundPlayer.play(sound: .level4)
         case .finishedLevel4:
-            print("Congratulations on finishing level 4, here are instruction for level 5")
+            print("Wow, level 4 is done! Here is level 5 and final instructions")
+            soundPlayer.play(sound: .level4Finished)
         case .level5:
-            print("Repeat instructions for level 5")
+            print("Level 5 is super easy, just do it man!")
+            soundPlayer.play(sound: .level5)
         case .finishedLevel5:
-            print("Congratulations on finishing level 5, you have completed the quest")
+            print("You are the fucking GOAT! You just completed the entire quest. Come see me at midnight to get your reward!!")
+            soundPlayer.play(sound: .level5Finished)
+        case .completed:
+            print("I'll say it again, good job! Come back at midnight for the reward!")
+            soundPlayer.play(sound: .completed)
         }
     }
 }

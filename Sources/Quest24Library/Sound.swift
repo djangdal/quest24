@@ -15,6 +15,13 @@ public enum Sound: String {
     case level1Finished = "level-1-finished"
     case level2 = "level-2"
     case level2Finished = "level-2-finished"
+    case level3 = "level-3"
+    case level3Finished = "level-3-finished"
+    case level4 = "level-4"
+    case level4Finished = "level-4-finished"
+    case level5 = "level-5"
+    case level5Finished = "level-5-finished"
+    case completed = "completed"
 }
 
 //https://ttsmp3.com/ai

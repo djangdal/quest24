@@ -40,7 +40,7 @@ public final class Quest24 {
             }
 
             // If they have just finished their level, except final level, upgrade them
-            if level.isLevelFinished && level != .finishedLevel5 {
+            if level.isLevelFinished {
                 let nextLevel = level.nextLevel
                 rfidController.write(level: nextLevel)
                 // Check here that the new level was written

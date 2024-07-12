@@ -9,12 +9,13 @@ public enum Level: Int {
     case finishedLevel4 = 45
     case level5 = 50
     case finishedLevel5 = 55
+    case completed = 60
 }
 
 public extension Level {
     var isLevelFinished: Bool {
         switch self {
-        case .level1, .level2, .level3, .level4, .level5: return false
+        case .level1, .level2, .level3, .level4, .level5, .completed: return false
         case .finishedLevel1, .finishedLevel2, .finishedLevel3, .finishedLevel4, .finishedLevel5: return true
         }
     }
@@ -25,6 +26,7 @@ public extension Level {
         case .finishedLevel2: return .level3
         case .finishedLevel3: return .level4
         case .finishedLevel4: return .level5
+        case .finishedLevel5: return .completed
         default: return self
         }
     }
