@@ -16,7 +16,7 @@ class QuestTests: XCTestCase {
         self.soundPlayer = MockSoundPlayer()
         self.pinController = PinController()
         self.storyController = StoryController(soundPlayer: soundPlayer)
-        self.storageController = try! StorageController()
+        self.storageController = try! StorageController(file: ":memory:")
         self.rfidController = MockRFIDController()
         self.inputController = InputController(pinController: pinController, rfidController: rfidController)
         self.quest = Quest24(
@@ -39,9 +39,9 @@ class QuestTests: XCTestCase {
     }
 
     func testQuest_whenStoredLevel_hasStartedQuest() {
-        try! storageController.storeLevelUpgrade(id: 10, for: .level2)
-        quest.tick(input: .rfid(id: 10, value: Level.finishedLevel2.rawValue))
-        let level = try! storageController.levelFor(id: 10)
+        try! storageController.storeLevelUpgrade(id: 23, for: .level2)
+        quest.tick(input: .rfid(id: 23, value: Level.finishedLevel2.rawValue))
+        let level = try! storageController.levelFor(id: 23)
         XCTAssertEqual(level, .level3)
     }
 
