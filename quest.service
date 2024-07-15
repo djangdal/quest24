@@ -1,0 +1,11 @@
+[Unit]
+Description=Quest24
+StartLimitIntervalSec=30
+StartLimitBurst=5
+
+[Service]
+ExecStart=/home/djangdal/quest24/quest.sh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

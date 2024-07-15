@@ -719,7 +719,7 @@ import Quest24Library
  let pinController = PinController()
  let soundPlayer = SoundPlayer()
  let storyController = StoryController(soundPlayer: soundPlayer)
- let storageController = StorageController()
+ let storageController = try! StorageController()
  let rfidController = RFIDController()
  let inputController = InputController(pinController: pinController, rfidController: rfidController)
  let quest24 = Quest24(

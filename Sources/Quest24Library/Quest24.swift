@@ -21,11 +21,11 @@ public final class Quest24 {
         switch input {
         case .rfid(let id, let value):
             // If we don't have a level stored for id, start a new quest
-            guard storageController.hasStartedQuestFor(id: id) else {
+            guard try! storageController.hasStartedQuestFor(id: id) else {
                 print("Starting quest for \(id)")
                 rfidController.write(level: .level1)
                 // Should check here that write was successfull
-                storageController.storeLevelUpgrade(id: id, for: .level1)
+                try! storageController.storeLevelUpgrade(id: id, for: .level1)
                 pinController.showLightsFor(level: .level1)
                 storyController.tellStoryFor(level: .level1)
                 return
@@ -44,7 +44,7 @@ public final class Quest24 {
                 let nextLevel = level.nextLevel
                 rfidController.write(level: nextLevel)
                 // Check here that the new level was written
-                storageController.storeLevelUpgrade(id: id, for: nextLevel)
+                try! storageController.storeLevelUpgrade(id: id, for: nextLevel)
             }
             pinController.showLightsFor(level: level)
             storyController.tellStoryFor(level: level)

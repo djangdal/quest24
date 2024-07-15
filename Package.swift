@@ -8,6 +8,7 @@ let package = Package(
         .library(name: "Quest24Library", targets: ["Quest24Library"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.15.3"),
         // .package(url: "https://github.com/sunlubo/SwiftFFmpeg.git", from: "1.0.0"),
         .package(url: "https://github.com/uraimo/SwiftyGPIO.git", from: "1.0.0"),
 //        .package(url: "https://github.com/pvieito/PythonKit.git", .branch("master"))
@@ -26,7 +27,8 @@ let package = Package(
             name: "Quest24Library",
             dependencies: [
                 "PythonKit",
-                "SwiftyGPIO"
+                "SwiftyGPIO",
+                "SQLite"
                 // "MFRC522"
             ]
         ),

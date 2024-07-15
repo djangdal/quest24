@@ -5,23 +5,23 @@ import SwiftyGPIO
 
 final public class PinController {
 #if os(Linux)
-    let pin2: GPIO
+    let pin: GPIO
 #endif
     
     public init() {
 #if os(Linux)
         let gpios = SwiftyGPIO.GPIOs(for:.RaspberryPi4)
-        pin2 = gpios[.P26]!
-        pin2.direction = .IN
-        pin2.pull = .down
+        pin = gpios[.P26]!
+        pin.direction = .IN
+        pin.pull = .up
         
-        pin2.onRaising { gpio in
+        pin.onRaising { gpio in
             print("Transition to 1, current value:" + String(gpio.value))
         }
-        pin2.onFalling { gpio in
+        pin.onFalling { gpio in
             print("Transition to 0, current value:" + String(gpio.value))
         }
-        pin2.onChange { gpio in
+        pin.onChange { gpio in
             print("The value changed, current value:" + String(gpio.value))
         }
 #endif
@@ -29,7 +29,7 @@ final public class PinController {
 
     public func isPressingButton() -> Bool {
 #if os(Linux)
-        return pin2.value == 1
+        return pin.value == 1
 #else
         return false
 #endif
