@@ -27,10 +27,6 @@ final public class StorageController {
             t.column(timestamp)
         })
     }
-    /*
-        // We only add to the DB, no update. Then we sort o
-        UserID, currentQuestLevel, timestamp 
-    */
     
     public func hasStartedQuestFor(id: Int) throws -> Bool {
         //Retrieve the current highest level for the id
@@ -49,18 +45,5 @@ final public class StorageController {
 
     public func storeLevelUpgrade(id: Int, for level: Level) throws {
         try db.run(user_quests.insert(col_id <- id, col_level <- level.rawValue, timestamp <- Date()))
-//        guard !level.isLevelFinished else { return }
-//        try db.run(user_quests.filter(col_id == id).update(col_level <- level.rawValue))
-        
-        //Store the level for the rfid in DB with timestamp
-    }
-
-
-    public func storeInvalidInput(id: Int, value: Int) {
-        // Store in DB the id, value, and timestamp
-    }
-
-    public func storeButtonPressed() {
-        // Store in DB a timestamp for button pressed
     }
 }

@@ -45,7 +45,7 @@ class QuestTests: XCTestCase {
         XCTAssertEqual(level, .level3)
     }
 
-    func testStorage_questChain() {
+    func testQuest_questChain() {
         quest.tick(input: .rfid(id: 10, value: 21221))
         XCTAssertEqual(Level.level1, try! storageController.levelFor(id: 10))
         XCTAssertEqual(rfidController.writtenLevel, .level1)
@@ -55,6 +55,54 @@ class QuestTests: XCTestCase {
 
         quest.tick(input: .rfid(id: 10, value: 25))
         XCTAssertEqual(rfidController.writtenLevel, .level3)
+    }
+
+    func testQuest_firstTimeWithLevel1Finished() {
+        quest.tick(input: .rfid(id: 10, value: 15))
+        XCTAssertEqual(Level.level2, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level2)
+    }
+
+    func testQuest_firstTimeWithLevel2Finished() {
+        quest.tick(input: .rfid(id: 10, value: 25))
+        XCTAssertEqual(Level.level3, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level3)
+    }
+
+    func testQuest_firstTimeWithLevel3Finished() {
+        quest.tick(input: .rfid(id: 10, value: 35))
+        XCTAssertEqual(Level.level4, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level4)
+    }
+
+    func testQuest_firstTimeWithLevel4Finished() {
+        quest.tick(input: .rfid(id: 10, value: 45))
+        XCTAssertEqual(Level.level5, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level5)
+    }
+
+    func testQuest_firstTimeWithLevel5Finished() {
+        quest.tick(input: .rfid(id: 10, value: 55))
+        XCTAssertEqual(Level.completed, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .completed)
+    }
+
+    func testQuest_unknownNumber_shouldStartQuest() {
+        quest.tick(input: .rfid(id: 10, value: 127))
+        XCTAssertEqual(Level.level1, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level1)
+    }
+
+    func testQuest_unknownNumberLow_shouldStartQuest() {
+        quest.tick(input: .rfid(id: 10, value: 2))
+        XCTAssertEqual(Level.level1, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level1)
+    }
+
+    func testQuest_zero_shouldStartQuest() {
+        quest.tick(input: .rfid(id: 10, value: 0))
+        XCTAssertEqual(Level.level1, try! storageController.levelFor(id: 10))
+        XCTAssertEqual(rfidController.writtenLevel, .level1)
     }
 }
 

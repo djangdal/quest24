@@ -4,7 +4,7 @@ import utime
 
 from os import uname
    
-thisLevel = 10
+thisLevel = 20
 thisLevelCompletion = thisLevel + 5
  
 red = Pin(0, Pin.OUT)
@@ -79,7 +79,7 @@ def do_read():
             print("Card detected %s" % uidInt, " with level", level)
             
             # Check if it is the correct level for this station and write new level
-            if level == thisLevel:
+            if level == thisLevel or level == thisLevel-5:
                 data = [thisLevelCompletion] + [0] * 15 
                 write_status = rdr.write(addr, data)
                 print("Did write new level to card")
@@ -111,6 +111,3 @@ def do_read():
         print("Bye")
 
 do_read()
-
-
-
