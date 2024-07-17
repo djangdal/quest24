@@ -31,6 +31,7 @@ public final class Quest24 {
             // If they have just finished their level, except final level, upgrade them
             guard !level.isLevelFinished else {
                 let nextLevel = level.nextLevel
+                pinController.showLightsFor(level: level)
                 rfidController.write(level: nextLevel)
                 try! storageController.storeLevelUpgrade(id: id, for: nextLevel)
                 storyController.tellStoryFor(level: level)
@@ -50,5 +51,6 @@ public final class Quest24 {
             print("Unknown input")
             return
         }
+        pinController.allLightsOff()
     }
 }

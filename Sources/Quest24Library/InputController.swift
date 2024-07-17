@@ -25,7 +25,7 @@ final public class InputController {
             else if pinController.isPressingButton() {
                 return .buttonPressed
             }
-            Thread.sleep(forTimeInterval: 0.1)
+            Thread.sleep(forTimeInterval: 0.2)
         }
 #else
         guard let line = readLine() else { return .unknown }
