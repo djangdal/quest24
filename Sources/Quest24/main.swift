@@ -38,4 +38,5 @@ while(!shouldExit) {
         continue
     }
     quest24.tick(input: input)
+    pinController.allLightsOff()
 }

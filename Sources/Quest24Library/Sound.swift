@@ -1,4 +1,6 @@
 public enum Sound: String {
+    case intro0 = "intro-0"
+    case intro1 = "intro-1"
     case noToken1 = "no-token-1"
     case noToken2 = "no-token-2"
     case noToken3 = "no-token-3"

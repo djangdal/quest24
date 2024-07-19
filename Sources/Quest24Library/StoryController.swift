@@ -6,18 +6,8 @@ final public class StoryController {
     private let soundPlayer: SoundPlayerProtocol
 
     private let infoPlaylist = Playlist(sounds: [
-        .noToken1,
-        .noToken2,
-//        .noToken3,
-//        .noToken4,
-//        .noToken5,
-//        .noToken6,
-//        .noToken7,
-//        .noToken8,
-//        .noToken9,
-//        .noToken10,
-//        .noToken11,
-        .noToken12
+        .intro0,
+        .intro1
     ])
 
     public init(soundPlayer: SoundPlayerProtocol) {

@@ -53,7 +53,6 @@ public final class Quest24 {
                 print("Unknown input")
                 return
             }
-            pinController.allLightsOff()
         } catch {
             print("Found error: \(error)")
         }
