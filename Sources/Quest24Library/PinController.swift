@@ -198,7 +198,6 @@ final public class PinController {
 
     public func allLightsOff() {
 #if os(Linux)
-        print("Setting to off")
         level1BluePin.value = 1
         level1GreenPin.value = 1
         level2BluePin.value = 1
