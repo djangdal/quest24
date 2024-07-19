@@ -5,36 +5,58 @@ final public class StoryController {
     private var lastSound: Sound?
     private let soundPlayer: SoundPlayerProtocol
 
+    private let infoPlaylist = Playlist(sounds: [
+        .noToken1,
+        .noToken2,
+//        .noToken3,
+//        .noToken4,
+//        .noToken5,
+//        .noToken6,
+//        .noToken7,
+//        .noToken8,
+//        .noToken9,
+//        .noToken10,
+//        .noToken11,
+        .noToken12
+    ])
+
     public init(soundPlayer: SoundPlayerProtocol) {
         self.soundPlayer = soundPlayer
     }
 
     public func tellIntroductionStory() {
-        guard let lastSound, let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) < 10 else {
-            soundPlayer.play(sound: .noToken1)
-            self.lastSound = .noToken1
-            self.lastSoundDate = Date()
-            return
+        if let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) > 4 {
+            infoPlaylist.reset()
         }
-        let newSound: Sound
-        switch lastSound {
-        case .noToken1: newSound = .noToken2
-        case .noToken2: newSound = .noToken3
-        case .noToken3: newSound = .noToken4
-        case .noToken4: newSound = .noToken5
-        case .noToken5: newSound = .noToken6
-        case .noToken6: newSound = .noToken7
-        case .noToken7: newSound = .noToken8
-        case .noToken8: newSound = .noToken9
-        case .noToken9: newSound = .noToken10
-        case .noToken10: newSound = .noToken11
-        case .noToken11: newSound = .noToken12
-        case .noToken12: newSound = .noToken12
-        default: return
-        }
-        self.lastSound = newSound
-        self.lastSoundDate = Date()
-        soundPlayer.play(sound: newSound)
+        let sound = infoPlaylist.getNextSound()
+        soundPlayer.play(sound: sound)
+        lastSoundDate = Date()
+
+//        guard let lastSound, let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) < 10 else {
+//            soundPlayer.play(sound: .noToken1)
+//            self.lastSound = .noToken1
+//            self.lastSoundDate = Date()
+//            return
+//        }
+//        let newSound: Sound
+//        switch lastSound {
+//        case .noToken1: newSound = .noToken2
+//        case .noToken2: newSound = .noToken3
+//        case .noToken3: newSound = .noToken4
+//        case .noToken4: newSound = .noToken5
+//        case .noToken5: newSound = .noToken6
+//        case .noToken6: newSound = .noToken7
+//        case .noToken7: newSound = .noToken8
+//        case .noToken8: newSound = .noToken9
+//        case .noToken9: newSound = .noToken10
+//        case .noToken10: newSound = .noToken11
+//        case .noToken11: newSound = .noToken12
+//        case .noToken12: newSound = .noToken12
+//        default: return
+//        }
+//        self.lastSound = newSound
+//        self.lastSoundDate = Date()
+//        soundPlayer.play(sound: newSound)
     }
 
     public func tellStoryFor(level: Level) {

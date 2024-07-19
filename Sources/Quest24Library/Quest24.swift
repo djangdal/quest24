@@ -21,7 +21,7 @@ public final class Quest24 {
         do {
             switch input {
             case .rfid(let id, let value):
-                // If we can't get a level from the value, start new quest
+                // If we can't get a level from the value, start new quest if we haven't
                 guard let level = Level(rawValue: value) else {
                     guard try !storageController.hasStartedQuestFor(id: id) else { return }
                     print("Starting quest for \(id)")
