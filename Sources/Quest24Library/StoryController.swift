@@ -5,85 +5,121 @@ final public class StoryController {
     private var lastSound: Sound?
     private let soundPlayer: SoundPlayerProtocol
 
-    private let infoPlaylist = Playlist(sounds: [
-        .intro0,
-        .intro1
+    private let introPlaylist = Playlist(sounds: [
+        .intro1,
+        .intro2,
+        .intro3,
+        .intro4,
+        .intro5,
+        .intro6
+    ])
+
+    private let level1Playlist = Playlist(sounds: [
+        .level1Step1,
+        .level1Step2,
+        .level1Step3,
+        .level1Step4,
+        .level1Step5
+    ])
+    private let level1FinishedPlaylist = Playlist(sounds: [
+        .level1Finish1,
+        .level1Finish2,
+        .level1Finish3,
+        .level1Finish4,
+        .level1Finish5
+    ])
+
+    private let level2Playlist = Playlist(sounds: [
+        .level2Step1,
+        .level2Step2,
+        .level2Step3,
+        .level2Step4,
+        .level2Step5
+    ])
+    private let level2FinishedPlaylist = Playlist(sounds: [
+        .level2Finish1,
+        .level2Finish2,
+        .level2Finish3,
+        .level2Finish4,
+        .level2Finish5
+    ])
+
+    private let level3Playlist = Playlist(sounds: [
+        .level3Step1,
+        .level3Step2,
+        .level3Step3,
+        .level3Step4,
+        .level3Step5
+    ])
+    private let level3FinishedPlaylist = Playlist(sounds: [
+        .level3Finish1,
+        .level3Finish2,
+        .level3Finish3,
+        .level3Finish4,
+        .level3Finish5
+    ])
+
+    private let level4Playlist = Playlist(sounds: [
+        .level4Step1,
+        .level4Step2,
+        .level4Step3
+    ])
+    private let level4FinishedPlaylist = Playlist(sounds: [
+        .level4Finish1,
+        .level4Finish2,
+        .level4Finish3
+    ])
+
+    private let level5Playlist = Playlist(sounds: [
+        .level5Step1,
+        .level5Step2,
+        .level5Step3
+    ])
+    private let level5FinishedPlaylist = Playlist(sounds: [
+        .level5Finish1,
+        .level5Finish2,
+        .level5Finish3
+    ])
+
+    private let completedPlaylist = Playlist(sounds: [
+        .completed1,
+        .completed2,
+        .completed3
     ])
 
     public init(soundPlayer: SoundPlayerProtocol) {
         self.soundPlayer = soundPlayer
     }
 
+    public func tellGameStart() {
+        soundPlayer.play(sound: .gameStart)
+    }
+
     public func tellIntroductionStory() {
-        if let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) > 4 {
-            infoPlaylist.reset()
+        if let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) > 120 {
+            introPlaylist.reset()
         }
-        let sound = infoPlaylist.getNextSound()
+        let sound = introPlaylist.getNextSound()
         soundPlayer.play(sound: sound)
         lastSoundDate = Date()
-
-//        guard let lastSound, let lastSoundDate = lastSoundDate, abs(lastSoundDate.timeIntervalSinceNow) < 10 else {
-//            soundPlayer.play(sound: .noToken1)
-//            self.lastSound = .noToken1
-//            self.lastSoundDate = Date()
-//            return
-//        }
-//        let newSound: Sound
-//        switch lastSound {
-//        case .noToken1: newSound = .noToken2
-//        case .noToken2: newSound = .noToken3
-//        case .noToken3: newSound = .noToken4
-//        case .noToken4: newSound = .noToken5
-//        case .noToken5: newSound = .noToken6
-//        case .noToken6: newSound = .noToken7
-//        case .noToken7: newSound = .noToken8
-//        case .noToken8: newSound = .noToken9
-//        case .noToken9: newSound = .noToken10
-//        case .noToken10: newSound = .noToken11
-//        case .noToken11: newSound = .noToken12
-//        case .noToken12: newSound = .noToken12
-//        default: return
-//        }
-//        self.lastSound = newSound
-//        self.lastSoundDate = Date()
-//        soundPlayer.play(sound: newSound)
     }
 
     public func tellStoryFor(level: Level) {
+        let playlist: Playlist
         switch level {
-        case .level1:
-            print("Welcome, you can now go and do level 1")
-            soundPlayer.play(sound: .level1)
-        case .finishedLevel1:
-            print("Congratulations on finishing level 1, here are instruction for level 2")
-            soundPlayer.play(sound: .level1Finished)
-        case .level2:
-            print("Here are the instructions for level 2 again")
-            soundPlayer.play(sound: .level2)
-        case .finishedLevel2:
-            print("Congratulations on finishing level 2, here are instruction for level 3")
-            soundPlayer.play(sound: .level2Finished)
-        case .level3:
-            print("Oh, you didnt understand it the first time. Here are the instructions again for level 3")
-            soundPlayer.play(sound: .level3)
-        case .finishedLevel3:
-            print("Wow, you just finished level 3, halfway there!. Now you need to scan box number 4")
-            soundPlayer.play(sound: .level3Finished)
-        case .level4:
-            print("Yeah thats my fault, you just need to scan box 4")
-            soundPlayer.play(sound: .level4)
-        case .finishedLevel4:
-            print("Wow, level 4 is done! Here is level 5 and final instructions")
-            soundPlayer.play(sound: .level4Finished)
-        case .level5:
-            print("Level 5 is super easy, just do it man!")
-            soundPlayer.play(sound: .level5)
-        case .finishedLevel5:
-            print("You are the fucking GOAT! You just completed the entire quest. Come see me at midnight to get your reward!!")
-            soundPlayer.play(sound: .level5Finished)
-        case .completed:
-            print("I'll say it again, good job! Come back at midnight for the reward!")
-            soundPlayer.play(sound: .completed)
+        case .level1: playlist = level1Playlist
+        case .level2: playlist = level2Playlist
+        case .level3: playlist = level3Playlist
+        case .level4: playlist = level4Playlist
+        case .level5: playlist = level5Playlist
+        case .finishedLevel1: playlist = level1FinishedPlaylist
+        case .finishedLevel2: playlist = level2FinishedPlaylist
+        case .finishedLevel3: playlist = level3FinishedPlaylist
+        case .finishedLevel4: playlist = level4FinishedPlaylist
+        case .finishedLevel5: playlist = level5FinishedPlaylist
+        case .completed: playlist = completedPlaylist
         }
+        let sound = playlist.getNextSound()
+        soundPlayer.play(sound: sound)
     }
 }

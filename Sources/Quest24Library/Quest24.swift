@@ -1,5 +1,6 @@
-public final class Quest24 {
+import Foundation
 
+public final class Quest24 {
     private let pinController: PinController
     private let storyController: StoryController
     private let storageController: StorageController
@@ -27,18 +28,20 @@ public final class Quest24 {
                     print("Starting quest for \(id)")
                     rfidController.write(level: .level1)
                     try storageController.storeLevelUpgrade(id: id, for: .level1)
+                    storyController.tellGameStart()
                     return
                 }
 
                 // If they have just finished their level, except final level, upgrade them
-                guard !level.isLevelFinished else {
+                if level.isLevelFinished {
                     let nextLevel = level.nextLevel
-                    pinController.showLightsFor(level: level)
                     rfidController.write(level: nextLevel)
+                    pinController.showLightsFor(level: level)
                     try storageController.storeLevelUpgrade(id: id, for: nextLevel)
                     storyController.tellStoryFor(level: level)
                     return
                 }
+
                 pinController.showLightsFor(level: level)
                 storyController.tellStoryFor(level: level)
 
