@@ -171,6 +171,7 @@ final public class PinController {
         Thread.sleep(forTimeInterval: flashTime*2)
         allGreen()
         Thread.sleep(forTimeInterval: 2)
+        allLightsOff()
 #endif
     }
 
