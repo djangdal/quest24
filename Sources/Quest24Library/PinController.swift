@@ -18,7 +18,7 @@ final public class PinController {
     let level5BluePin: GPIO
     let level5GreenPin: GPIO
 #endif
-    
+
     public init() {
 #if os(Linux)
         let gpios = SwiftyGPIO.GPIOs(for:.RaspberryPi4)
@@ -45,12 +45,13 @@ final public class PinController {
         level4GreenPin.direction = .OUT
         level4BluePin = gpios[.P13]!
         level4BluePin.direction = .OUT
-        
+
         level5GreenPin = gpios[.P6]!
         level5GreenPin.direction = .OUT
         level5BluePin = gpios[.P5]!
         level5BluePin.direction = .OUT
-        
+
+        showStartupSequence()
         // pin.onRaising { gpio in
         //     print("Transition to 1, current value:" + String(gpio.value))
         // }
@@ -77,106 +78,127 @@ final public class PinController {
         print("Setting lights for level: \(level.rawValue)")
         allLightsOff()
         switch level {
-            case .level1:
+        case .level1:
             level1BluePin.value = 0
-            case .finishedLevel1:
+        case .finishedLevel1:
             level1GreenPin.value = 0
-            case .level2:
+        case .level2:
             level1GreenPin.value = 0
             level2BluePin.value = 0
-            case .finishedLevel2:
+        case .finishedLevel2:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
-            case .level3:
+        case .level3:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3BluePin.value = 0
-            case .finishedLevel3:
+        case .finishedLevel3:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3GreenPin.value = 0
-            case .level4:
+        case .level4:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3GreenPin.value = 0
             level4BluePin.value = 0
-            case .finishedLevel4:
+        case .finishedLevel4:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3GreenPin.value = 0
             level4GreenPin.value = 0
-            case .level5:
+        case .level5:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3GreenPin.value = 0
             level4GreenPin.value = 0
             level5BluePin.value = 0
-            case .finishedLevel5:
+        case .finishedLevel5:
             level1GreenPin.value = 0
             level2GreenPin.value = 0
             level3GreenPin.value = 0
             level4GreenPin.value = 0
             level5GreenPin.value = 0
-            case .completed:
+        case .completed:
             Task {
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
-            Thread.sleep(forTimeInterval: flashTime)
-            allBlue()
-            Thread.sleep(forTimeInterval: flashTime)
-            allGreen()
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
+                Thread.sleep(forTimeInterval: flashTime)
+                allBlue()
+                Thread.sleep(forTimeInterval: flashTime)
+                allGreen()
             }
         }
 #endif
     }
 
-    public func showAllRed() {
+    public func showStartupSequence() {
 #if os(Linux)
-        // Turn on the LED for the level
+        allLightsOff()
+        level1GreenPin.value = 0
+        Thread.sleep(forTimeInterval: flashTime*2)
+        allLightsOff()
+        level2GreenPin.value = 0
+        Thread.sleep(forTimeInterval: flashTime*2)
+        allLightsOff()
+        level3GreenPin.value = 0
+        Thread.sleep(forTimeInterval: flashTime*2)
+        allLightsOff()
+        level4GreenPin.value = 0
+        Thread.sleep(forTimeInterval: flashTime*2)
+        allLightsOff()
+        level5GreenPin.value = 0
+        Thread.sleep(forTimeInterval: flashTime*2)
+        allGreen()
+        Thread.sleep(forTimeInterval: 2)
 #endif
     }
 
     private func allGreen() {
+#if os(Linux)
         allLightsOff()
         level1GreenPin.value = 0
         level2GreenPin.value = 0
         level3GreenPin.value = 0
         level4GreenPin.value = 0
         level5GreenPin.value = 0
+#endif
     }
 
     private func allBlue() {
+#if os(Linux)
         allLightsOff()
         level1BluePin.value = 0
         level2BluePin.value = 0
         level3BluePin.value = 0
         level4BluePin.value = 0
         level5BluePin.value = 0
+#endif
     }
 
     public func allLightsOff() {
-print("Setting to off")
+#if os(Linux)
+        print("Setting to off")
         level1BluePin.value = 1
         level1GreenPin.value = 1
         level2BluePin.value = 1
@@ -187,5 +209,6 @@ print("Setting to off")
         level4GreenPin.value = 1
         level5BluePin.value = 1
         level5GreenPin.value = 1
+#endif
     }
 }

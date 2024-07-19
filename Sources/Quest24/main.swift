@@ -4,7 +4,7 @@ import Quest24Library
 let pinController = PinController()
 let soundPlayer = SoundPlayer()
 let storyController = StoryController(soundPlayer: soundPlayer)
-let storageController = try! StorageController(file: "/home/djangdal/.local/var/quest24.sqlite3")
+let storageController = try! StorageController(file: ".quest24-borderland.sqlite3")
 let rfidController = RFIDController()
 let inputController = InputController(pinController: pinController, rfidController: rfidController)
 let quest24 = Quest24(

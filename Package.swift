@@ -9,14 +9,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.15.3"),
-        // .package(url: "https://github.com/sunlubo/SwiftFFmpeg.git", from: "1.0.0"),
         .package(url: "https://github.com/uraimo/SwiftyGPIO.git", from: "1.0.0"),
-//        .package(url: "https://github.com/pvieito/PythonKit.git", .branch("master"))
-//        .package(url: "https://github.com/djangdal/MFRC522.git", .branch("master"))
-        // .package(path: "../MFRC522")
         .package(url: "https://github.com/pvieito/PythonKit.git", .branch("master")),
-        //        .package(url: "https://github.com/djangdal/MFRC522.git", .branch("master"))
-//        .package(path: "../MFRC522")
     ],
     targets: [
         .target(
@@ -29,7 +23,6 @@ let package = Package(
                 "PythonKit",
                 "SwiftyGPIO",
                 "SQLite"
-                // "MFRC522"
             ]
         ),
         .testTarget(
