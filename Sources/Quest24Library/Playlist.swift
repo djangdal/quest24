@@ -1,19 +1,19 @@
 import Foundation
 
-class Playlist {
+public class Playlist {
     let sounds: [Sound]
     private var current: Int
 
-    init(sounds: [Sound]) {
+    public init(sounds: [Sound]) {
         self.sounds = sounds
         self.current = 0
     }
 
-    func reset() {
+    public func reset() {
         current = 0
     }
 
-    func getNextSound() -> Sound {
+    public func getNextSound() -> Sound {
         let index = current % sounds.count
         current += 1
         return sounds[index]

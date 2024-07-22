@@ -26,6 +26,7 @@ public final class Quest24 {
                 guard let level = Level(rawValue: value) else {
                     guard try !storageController.hasStartedQuestFor(id: id) else { return }
                     print("Starting quest for \(id)")
+                    pinController.showLightsFor(level: .level1)
                     rfidController.write(level: .level1)
                     try storageController.storeLevelUpgrade(id: id, for: .level1)
                     storyController.tellGameStart()
