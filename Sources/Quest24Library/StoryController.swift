@@ -4,7 +4,23 @@ final public class StoryController {
     private var lastSoundDate: Date?
     private var lastSound: Sound?
     private let soundPlayer: SoundPlayerProtocol
-    private let idlePlaylist = Playlist(sounds: [.idle1, .idle2, .idle3, .idle4])
+    private let idlePlaylist = Playlist(
+        sounds: [
+            .idle1,
+            .idle2,
+            .idle3,
+            .idle4,
+            .idle5,
+            .idle6,
+            .idle7,
+            .idle8,
+            .idle9,
+            .idle10,
+            .idle11,
+            .idle12,
+            .idle13
+        ]
+    )
 
     private let introPlaylist = Playlist(sounds: [
         .intro1,
