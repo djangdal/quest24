@@ -32,7 +32,7 @@ final public class InputController {
                 return .buttonPressed
             }
 
-            if abs(lastSoundDate.timeIntervalSinceNow) > 20 {
+            if abs(lastSoundDate.timeIntervalSinceNow) > 240 {
                 lastSoundDate = Date()
                 return .idle
             }
