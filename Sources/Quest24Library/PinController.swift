@@ -186,7 +186,7 @@ final public class PinController {
 #endif
     }
 
-    private func allBlue() {
+    public func allBlue() {
 #if os(Linux)
         allLightsOff()
         level1BluePin.value = 0

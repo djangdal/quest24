@@ -3,6 +3,7 @@ import Foundation
 public enum InputType: Equatable {
     case rfid(id: Int, value: Int)
     case buttonPressed
+    case idle
     case unknown
     case exit
 }
@@ -10,6 +11,7 @@ public enum InputType: Equatable {
 final public class InputController {
     private let pinController: PinController
     private let rfidController: RFIDControllerProtocol
+    private var lastSoundDate: Date = Date()
 
     public init(pinController: PinController, rfidController: RFIDControllerProtocol) {
         self.pinController = pinController
@@ -24,6 +26,11 @@ final public class InputController {
             }
             else if pinController.isPressingButton() {
                 return .buttonPressed
+            }
+
+            if abs(lastSoundDate.timeIntervalSinceNow) > 20 {
+                lastSoundDate = Date()
+                return .idle
             }
             Thread.sleep(forTimeInterval: 0.2)
         }

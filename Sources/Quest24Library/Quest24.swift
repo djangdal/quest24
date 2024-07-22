@@ -21,6 +21,11 @@ public final class Quest24 {
     public func tick(input: InputType) {
         do {
             switch input {
+            case .idle:
+                pinController.allBlue()
+                storyController.tellIdleSound()
+                pinController.allLightsOff()
+
             case .rfid(let id, let value):
                 // If we can't get a level from the value, start new quest if we haven't
                 guard let level = Level(rawValue: value) else {

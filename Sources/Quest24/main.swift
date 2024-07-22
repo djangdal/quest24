@@ -30,24 +30,13 @@ print("finishedLevel4 = 45")
 print("level5 = 50")
 print("finishedLevel5 = 55")
 
-
-private var lastSoundDate: Date = Date()
-let playlist = Playlist(sounds: [.idle1, .idle2, .idle3, .idle4])
-
 var shouldExit = false
 while(!shouldExit) {
-    if abs(lastSoundDate.timeIntervalSinceNow) > 20 {
-        lastSoundDate = Date()
-        let sound = playlist.getNextSound()
-        soundPlayer.play(sound: sound)
-    }
-
     let input = inputController.getInput()
     guard input != .exit else {
         shouldExit = true
         continue
     }
     quest24.tick(input: input)
-    lastSoundDate = Date()
     pinController.allLightsOff()
 }
