@@ -17,7 +17,11 @@ final public class InputController {
         self.pinController = pinController
         self.rfidController = rfidController
     }
-    
+
+    public func resetIdleSound() {
+        lastSoundDate = Date()
+    }
+
     public func getInput() -> InputType {
 #if os(Linux)
         while(true) {

@@ -5,17 +5,20 @@ public final class Quest24 {
     private let storyController: StoryController
     private let storageController: StorageController
     private let rfidController: RFIDControllerProtocol
+    private let inputController: InputController
 
     public init(
         pinController: PinController,
         storyController: StoryController,
         storageController: StorageController,
-        rfidController: RFIDControllerProtocol
+        rfidController: RFIDControllerProtocol,
+        inputController: InputController
     ) {
         self.pinController = pinController
         self.storyController = storyController
         self.storageController = storageController
         self.rfidController = rfidController
+        self.inputController = inputController
     }
 
     public func tick(input: InputType) {
@@ -27,6 +30,7 @@ public final class Quest24 {
                 pinController.allLightsOff()
 
             case .rfid(let id, let value):
+                inputController.resetIdleSound()
                 // If we can't get a level from the value, start new quest if we haven't
                 guard let level = Level(rawValue: value) else {
                     guard try !storageController.hasStartedQuestFor(id: id) else { return }
@@ -53,6 +57,7 @@ public final class Quest24 {
 
             case .buttonPressed:
                 print("Button pressed")
+                inputController.resetIdleSound()
                 storyController.tellIntroductionStory()
 
             case .exit:

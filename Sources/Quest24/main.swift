@@ -11,7 +11,8 @@ let quest24 = Quest24(
     pinController: pinController,
     storyController: storyController,
     storageController: storageController,
-    rfidController: rfidController
+    rfidController: rfidController,
+    inputController: inputController
 )
 
 print("----------Hi and welcome---------------")
