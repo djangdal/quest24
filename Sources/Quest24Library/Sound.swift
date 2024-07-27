@@ -16,6 +16,7 @@ public enum Sound: String {
     case idle11 = "idle-11"
     case idle12 = "idle-12"
     case idle13 = "idle-13"
+    case ending = "ending"
     case intro1 = "intro-1"
     case intro2 = "intro-2"
     case intro3 = "intro-3"

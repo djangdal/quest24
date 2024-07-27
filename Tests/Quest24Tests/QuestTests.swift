@@ -23,7 +23,8 @@ class QuestTests: XCTestCase {
             pinController: pinController,
             storyController: storyController,
             storageController: storageController,
-            rfidController: rfidController
+            rfidController: rfidController,
+            inputController: inputController
         )
     }
 

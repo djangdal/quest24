@@ -57,8 +57,9 @@ public final class Quest24 {
 
             case .buttonPressed:
                 print("Button pressed")
-                inputController.resetIdleSound()
-                storyController.tellIntroductionStory()
+//                inputController.resetIdleSound()
+//                storyController.tellIntroductionStory()
+                storyController.tellGameEnd()
 
             case .exit:
                 return

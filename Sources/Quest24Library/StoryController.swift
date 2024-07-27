@@ -108,6 +108,10 @@ final public class StoryController {
         self.soundPlayer = soundPlayer
     }
 
+    public func tellGameEnd() {
+        soundPlayer.play(sound: .ending)
+    }
+
     public func tellGameStart() {
         soundPlayer.play(sound: .gameStart)
     }
